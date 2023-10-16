@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patientvisit/core/config/environment_config.dart';
+import 'package:patientvisit/core/helpers/navigators.dart';
+import 'package:patientvisit/feature/voice_recorder/presentation/cubit/voice_recorder_cubit.dart';
+import 'package:patientvisit/feature/voice_recorder/presentation/page/voice_recorder.dart';
 import 'package:patientvisit/service_registration/dependency_injection.dart';
+import 'package:patientvisit/service_registration/dependency_injection.dart'
+    as sl;
 
 void main() {
   setupServicesLocator();
@@ -20,6 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -92,6 +99,20 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            InkWell(
+              child: Text(
+                "Voice Recorder",
+                style: TextStyle(color: Colors.deepPurple, fontSize: 20),
+              ),
+              onTap: () {
+                materialNavigator(
+                    context: context,
+                    screenName: BlocProvider(
+                        create: (context) => sl.locator<VoiceRecorderCubit>(),
+                        child: VoiceRecorder()),
+                    type: NavigatorType.PUSH);
+              },
+            )
           ],
         ),
       ),
